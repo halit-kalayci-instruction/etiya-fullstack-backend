@@ -18,7 +18,7 @@ public class CategoriesController {
     }
 
     @GetMapping()
-    public List<Category> getAll(){
+    public List<Category> getAll() throws InterruptedException {
         return categoryRepo.findAll();
     }
 }
