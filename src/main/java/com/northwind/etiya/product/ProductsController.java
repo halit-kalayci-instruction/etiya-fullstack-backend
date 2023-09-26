@@ -50,4 +50,10 @@ public class ProductsController {
 
         productRepo.save(productToUpdate);
     }
+
+    @DeleteMapping()
+    public void delete(@RequestParam int id){
+        Product productToDelete = productRepo.findById(id).orElseThrow();
+        productRepo.delete(productToDelete);
+    }
 }
