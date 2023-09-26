@@ -1,5 +1,7 @@
 package com.northwind.etiya.product;
 
+import com.northwind.etiya.category.Category;
+import com.northwind.etiya.supplier.Supplier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +24,20 @@ public class ProductsController {
         return productRepo.findAll();
     }
 
-    @PostMapping()
-    public void add(AddProductRequest request){
+    @GetMapping("getById")
+    public Product getById(@RequestParam int id){
+        return productRepo.findById(id).orElseThrow();
+    }
 
+    @PostMapping()
+    public void add(@RequestBody AddProductRequest request){
+        Product product = new Product();
+        product.setId(99);
+        product.setName(request.getProductName());
+        product.setSupplier(Supplier.builder().supplierId(request.getSupplierId()).build());
+        product.setCategory(Category.builder().categoryId(request.getCategoryId()).build());
+        product.setDiscontinued(0);
+        productRepo.save(product);
     }
 
 }
