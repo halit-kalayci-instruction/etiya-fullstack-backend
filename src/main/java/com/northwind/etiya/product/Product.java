@@ -20,6 +20,9 @@ public class Product {
     @Column(name="unit_price")
     private double unitPrice;
 
+    @Column(name="units_in_stock")
+    private int unitsInStock;
+
     @ManyToOne()
     @JoinColumn(name="category_id")
     private Category category;
