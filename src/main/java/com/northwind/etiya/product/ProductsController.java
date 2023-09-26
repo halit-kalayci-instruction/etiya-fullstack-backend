@@ -40,4 +40,14 @@ public class ProductsController {
         productRepo.save(product);
     }
 
+    @PutMapping()
+    public void update(@RequestBody UpdateProductRequest request){
+        Product productToUpdate = productRepo.findById(request.getId()).orElseThrow();
+
+        productToUpdate.setName(request.getProductName());
+        productToUpdate.setSupplier(Supplier.builder().supplierId(request.getSupplierId()).build());
+        productToUpdate.setCategory(Category.builder().categoryId(request.getCategoryId()).build());
+
+        productRepo.save(productToUpdate);
+    }
 }
