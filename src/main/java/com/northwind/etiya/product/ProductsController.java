@@ -1,7 +1,9 @@
 package com.northwind.etiya.product;
 
 import com.northwind.etiya.category.Category;
+import com.northwind.etiya.exceptions.types.BusinessException;
 import com.northwind.etiya.supplier.Supplier;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,14 +32,19 @@ public class ProductsController {
     }
 
     @PostMapping()
-    public void add(@RequestBody AddProductRequest request){
-        Product product = new Product();
-        product.setId(99);
+    public void add(@RequestBody @Valid AddProductRequest request){
+
+        // eğer aynı isimde ürün varsa BusinessException fırlat..
+        throw new BusinessException("Aynı isimde bir ürün zaten mevcut");
+
+        /*Product product = new Product();
         product.setName(request.getProductName());
         product.setSupplier(Supplier.builder().supplierId(request.getSupplierId()).build());
         product.setCategory(Category.builder().categoryId(request.getCategoryId()).build());
         product.setDiscontinued(0);
-        productRepo.save(product);
+        product.setUnitPrice(request.getUnitPrice());
+        product.setUnitsInStock(request.getUnitsInStock());
+        productRepo.save(product); */
     }
 
     @PutMapping()

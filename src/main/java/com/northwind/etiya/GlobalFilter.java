@@ -22,6 +22,7 @@ public class GlobalFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         ((HttpServletResponse) response).addHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,DELETE,PUT");
         ((HttpServletResponse) response).addHeader("Access-Control-Allow-Origin", "*");
+        ((HttpServletResponse) response).addHeader("Access-Control-Allow-Headers", "X-Requested-With,Origin,Content-Type,Accept,Authorization");
         String path = ((HttpServletRequest) request).getRequestURI();
         String x = req.getHeader("Authorization");
         if(path.contains("swagger") || path.contains("api-docs")){
