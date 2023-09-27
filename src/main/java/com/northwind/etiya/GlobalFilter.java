@@ -20,9 +20,15 @@ public class GlobalFilter implements Filter {
             FilterChain chain) throws IOException, ServletException {
 
         HttpServletRequest req = (HttpServletRequest) request;
-        ((HttpServletResponse) response).addHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,DELETE,PUT");
-        ((HttpServletResponse) response).addHeader("Access-Control-Allow-Origin", "*");
-        ((HttpServletResponse) response).addHeader("Access-Control-Allow-Headers", "X-Requested-With,Origin,Content-Type,Accept,Authorization");
+        ((HttpServletResponse)response).setHeader("Access-Control-Allow-Origin", "*");
+        ((HttpServletResponse)response).setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        ((HttpServletResponse)response).setHeader("Access-Control-Max-Age", "3600");
+        ((HttpServletResponse)response).setHeader("Access-Control-Allow-Headers", "authorization, content-type, xsrf-token");
+        ((HttpServletResponse)response).addHeader("Access-Control-Expose-Headers", "xsrf-token");
+        if ("OPTIONS".equals(((HttpServletRequest) request).getMethod())) {
+            ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_OK);
+            return;
+        }
         String path = ((HttpServletRequest) request).getRequestURI();
         String x = req.getHeader("Authorization");
         if(path.contains("swagger") || path.contains("api-docs")){
