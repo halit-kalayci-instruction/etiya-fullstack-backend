@@ -1,15 +1,11 @@
 package com.northwind.etiya;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.northwind.etiya.exceptions.types.UnauthorizedException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.ErrorResponse;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 
@@ -24,6 +20,8 @@ public class GlobalFilter implements Filter {
             FilterChain chain) throws IOException, ServletException {
 
         HttpServletRequest req = (HttpServletRequest) request;
+        ((HttpServletResponse) response).addHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,DELETE,PUT");
+        ((HttpServletResponse) response).addHeader("Access-Control-Allow-Origin", "*");
         String path = ((HttpServletRequest) request).getRequestURI();
         String x = req.getHeader("Authorization");
         if(path.contains("swagger") || path.contains("api-docs")){
@@ -36,12 +34,12 @@ public class GlobalFilter implements Filter {
             errorResponse.setMessage("Unauthorized Access");
             byte[] responseToSend = restResponseBytes(errorResponse);
             ((HttpServletResponse) response).setHeader("Content-Type", "application/json");
+
             ((HttpServletResponse) response).setStatus(401);
             response.getOutputStream().write(responseToSend);
         }else{
             chain.doFilter(request, response);
         }
-
     }
 
     private byte[] restResponseBytes(com.northwind.etiya.ErrorResponse eErrorResponse) throws IOException {

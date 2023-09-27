@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("products")
-@CrossOrigin
+@CrossOrigin()
 public class ProductsController {
 
     private ProductRepo productRepo;

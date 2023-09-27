@@ -11,8 +11,6 @@ public class ExceptionHandlers {
     @ExceptionHandler({ UnauthorizedException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public String handleException() {
-        //
-        System.out.println("Exce");
         return "Unauthorized";
     }
 }
