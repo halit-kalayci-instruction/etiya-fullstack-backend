@@ -24,8 +24,13 @@ public class GlobalFilter implements Filter {
             FilterChain chain) throws IOException, ServletException {
 
         HttpServletRequest req = (HttpServletRequest) request;
+        String path = ((HttpServletRequest) request).getRequestURI();
         String x = req.getHeader("Authorization");
-        if(!x.equals("Bearer Etiya")){
+        if(path.contains("swagger") || path.contains("api-docs")){
+            chain.doFilter(request, response);
+            return;
+        }
+        if(( x==null || !x.equals("Bearer Etiya") )){
             com.northwind.etiya.ErrorResponse errorResponse = new com.northwind.etiya.ErrorResponse();
             errorResponse.setCode(401);
             errorResponse.setMessage("Unauthorized Access");
@@ -33,9 +38,9 @@ public class GlobalFilter implements Filter {
             ((HttpServletResponse) response).setHeader("Content-Type", "application/json");
             ((HttpServletResponse) response).setStatus(401);
             response.getOutputStream().write(responseToSend);
-            return;
+        }else{
+            chain.doFilter(request, response);
         }
-        chain.doFilter(request, response);
 
     }
 
